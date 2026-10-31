@@ -1,0 +1,10 @@
+.claude/
+.git/
+node_modules/
+.env
+.env.*
+.DS_Store
+coverage/
+tests/
+output/
+supabase/

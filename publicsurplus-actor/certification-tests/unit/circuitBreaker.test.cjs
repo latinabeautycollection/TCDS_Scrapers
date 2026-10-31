@@ -1,0 +1,3 @@
+let SourceCircuitBreaker; beforeAll(async()=>({SourceCircuitBreaker}=await import('../../src/publicsurplus/circuitBreaker.js')));
+test('opens after governed consecutive 403 threshold',()=>{const b=new SourceCircuitBreaker({maxConsecutive403:3,maxConsecutive5xx:9,maxRateLimited:9});expect(b.note(403)).toBeNull();expect(b.note(403)).toBeNull();expect(b.note(403)).toMatch(/consecutive_403/);expect(()=>b.assertClosed()).toThrow(/PUBLICSURPLUS_CIRCUIT_OPEN/);});
+test('successful response resets consecutive 5xx counter',()=>{const b=new SourceCircuitBreaker({maxConsecutive403:9,maxConsecutive5xx:2,maxRateLimited:9});b.note(500);b.note(200);expect(b.note(500)).toBeNull();});

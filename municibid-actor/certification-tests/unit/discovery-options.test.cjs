@@ -1,0 +1,2 @@
+const fs=require('fs'),path=require('path');let mod;beforeAll(async()=>{mod=await import('../../src/municibid/discovery.js');});
+test('option/form navigation is discovered',()=>{const html=fs.readFileSync(path.join(__dirname,'../fixtures/municibid-option-navigation.html'),'utf8');const parts=mod.parseDiscoveryLinks(html,'https://municibid.com/browse').map(x=>x.partition);expect(parts.some(x=>x.startsWith('region:'))).toBe(true);expect(parts.some(x=>x.startsWith('category:'))).toBe(true);expect(parts.some(x=>x.startsWith('seller:'))).toBe(true);});

@@ -1,0 +1,281 @@
+{
+  "generated_at": "2026-10-31T06:42:10.633Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "municibid_normalizes_as_source",
+      "pass": true,
+      "detail": "municibid"
+    },
+    {
+      "name": "municibid_infers_auction_listing",
+      "pass": true,
+      "detail": "auction_listing"
+    },
+    {
+      "name": "unified_record_validates",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "propertyroom_source_regression",
+      "pass": true,
+      "detail": "propertyroom/auction_listing"
+    },
+    {
+      "name": "countdown_excluded_from_hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end_time_mutation_changes_hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_new_processes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_same_skips",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_changed_reprocesses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_source_is_municibid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sql_export_source_municibid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sql_export_propertyroom_regression",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "healthy_exhaustive_health_pass",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "pending_exhaustive_health_incomplete",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "parser_collapse_fails",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "corrupt_recovery_rejected_and_preserved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "corrupt_source_dlq_rejected_and_preserved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_fingerprint_excludes_secrets",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_fingerprint_tracks_discovery_policy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "atomic_single_writer_lease_blocks_concurrent_state_writer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dataset_write_precedes_dedupe_commit",
+      "pass": true,
+      "detail": "36310/36598"
+    },
+    {
+      "name": "no_price_only_early_skip_call",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "proxy_fail_closed_with_explicit_override_only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "automatic_parse_retry_via_throw",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "401_and_403_have_distinct_dispositions",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "retry_after_http_date_supported",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "capacity_truncation_checkpointed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "run_lease_wired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "lease_fencing_before_navigation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "lease_fencing_before_dataset_write",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "stale_lock_requires_prior_run_terminal_verification",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "option_navigation_discovery_wired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "form_navigation_discovery_wired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "empty_input_exhaustive_wired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "targeted_empty_input_rejected",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "completion_manifest_wired",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "required_webhook_fail_closed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "release_version_v1313_in_main",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "release_version_integrity",
+      "pass": true,
+      "detail": "1.3.13/1.3.13/1.3.13/release-1.3.13"
+    },
+    {
+      "name": "required_qa_fields_in_apify_view",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "opening_bid_retained_when_no_bids",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "source_record_and_shipping_method_extracted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "live_detail_auction_state_parsed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_discoveryMode",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_maxPages",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_maxDiscoveryRequests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_maxDetailRequests",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_maxRuntimeMinutes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_proxyFallbackToDirect",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_singleWriterLeaseEnabled",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_runLeaseTtlMinutes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "input_schema_contains_completedEvidenceRetainEntries",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_production_todo_fixme",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_direct_listings_write",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "completion_manifest_key_defined",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

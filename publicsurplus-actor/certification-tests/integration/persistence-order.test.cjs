@@ -1,0 +1,2 @@
+const fs=require('fs'); const path=require('path');
+test('dataset write precedes durable dedupe commit',()=>{const s=fs.readFileSync(path.join(__dirname,'../../src/extractors/publicsurplus.js'),'utf8');expect(s.indexOf('await dataset.pushData(record)')).toBeGreaterThan(-1);expect(s.indexOf('await dedupeManager.markSeenWithFingerprint(record.external_id')).toBeGreaterThan(s.indexOf('await dataset.pushData(record)'));});

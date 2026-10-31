@@ -1,0 +1,174 @@
+{
+  "actor": "liquidation",
+  "version": "1.1.10",
+  "generated_at": "2026-10-31T07:25:19.416Z",
+  "passed": 33,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "release_version_integrity",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "auction_view_identity",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "pagination_underscore_page",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "cad_c_dollar_parsing",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "verified_category_index",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "form_input_facet_discovery",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "manifest_provenance",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "manifest_row_parser",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "manifest_record_type_contract",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "mixed_sealed_buy_now",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "mutation_fields_in_source_meta",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "buyer_premium_estimate_provenance",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "sealed_bid_minimum_offer_capture",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "sealed_bid_index_observation_guard",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "lot_scoped_bid_price_parsing",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "separate_lot_shipping_panel",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "starting_bid_and_price_type",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "shipping_cost_and_method",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "buy_now_price_exported",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "mandatory_price_shipping_start_health_gates",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "completeness_metrics_initialized_and_attribute_aware",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "auction_start_time_provenance",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "untouched_lot_source_record",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "unified_source_recognition",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "dedupe_source_recognition",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "dataset_before_dedupe",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "recovery_dlq",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "manifest_recovery_checkpoint",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "single_writer_lock",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "circuit_breaker",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "production_release_sha_required",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "no_direct_listings_write",
+      "pass": true,
+      "evidence": ""
+    },
+    {
+      "name": "javascript_syntax",
+      "pass": true,
+      "evidence": ""
+    }
+  ]
+}

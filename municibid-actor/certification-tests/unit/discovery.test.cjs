@@ -1,0 +1,4 @@
+const fs=require('fs'),path=require('path');let mod;beforeAll(async()=>{mod=await import('../../src/municibid/discovery.js');});
+const fixture=()=>fs.readFileSync(path.join(__dirname,'../fixtures/municibid-discovery.html'),'utf8');
+test('exhaustive seeds cover active/new/popular/map/states',()=>{const p=mod.exhaustiveSeedRequests().map(x=>x.partition);expect(p).toEqual(expect.arrayContaining(['global_active','newest','most_bids','map_active','states']));});
+test('discovery parser finds seller/category/state partitions',()=>{const r=mod.parseDiscoveryLinks(fixture(),'https://municibid.com/browse');const parts=r.map(x=>x.partition);expect(parts.some(x=>x.startsWith('seller:'))).toBe(true);expect(parts.some(x=>x.startsWith('category:'))).toBe(true);expect(parts.some(x=>x.startsWith('region:'))).toBe(true);expect(parts).toEqual(expect.arrayContaining(['newest','most_bids','map_active','states']));});

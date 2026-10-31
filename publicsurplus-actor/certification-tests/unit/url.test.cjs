@@ -1,0 +1,3 @@
+let mod; beforeAll(async()=>{mod=await import('../../src/publicsurplus/url.js')});
+test('parses canonical auction identity',()=>{const id=mod.parseAuctionIdentity('https://register.publicsurplus.com/sms/auction/view?auc=4098818&utm_source=x'); expect(id.auctionId).toBe('4098818'); expect(id.externalId).toBe('publicsurplus-4098818'); expect(id.canonicalUrl).toBe('https://www.publicsurplus.com/sms/auction/view?auc=4098818');});
+test('host boundary accepts Public Surplus and rejects unrelated host',()=>{expect(mod.isPublicSurplusUrl('https://www.publicsurplus.com/sms/browse/search')).toBe(true); expect(mod.isPublicSurplusUrl('https://example.com')).toBe(false);});

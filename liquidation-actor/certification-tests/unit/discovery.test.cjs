@@ -1,0 +1,2 @@
+const fs=require('fs'),path=require('path');let d;beforeAll(async()=>d=await import('../../src/liquidation/discovery.js'));
+test('discovers category and seller partitions',()=>{const h=fs.readFileSync(path.join(__dirname,'../fixtures/liquidation-search.html'),'utf8');const parts=d.parseDiscoveryLinks(h,'https://www.liquidation.com/auction/search?flag=new').map(x=>x.partition);expect(parts).toContain('category:1005');expect(parts).toContain('seller:Sony');});

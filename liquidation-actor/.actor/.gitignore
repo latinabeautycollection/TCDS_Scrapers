@@ -1,0 +1,14 @@
+# Claude
+.claude/
+
+# Actor runtime storage
+/storage/
+
+# CSV exports
+/output/
+
+# Node
+node_modules/
+
+# Environment
+.env

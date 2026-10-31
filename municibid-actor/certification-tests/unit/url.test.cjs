@@ -1,0 +1,3 @@
+let mod;beforeAll(async()=>{mod=await import('../../src/municibid/url.js');});
+test('parses canonical listing identity',()=>{const id=mod.parseAuctionIdentity('https://municibid.com/listing/86306602/lot-various-equipment?utm_source=x');expect(id.auctionId).toBe('86306602');expect(id.externalId).toBe('municibid-86306602');expect(id.canonicalUrl).toBe('https://municibid.com/listing/86306602');});
+test('host boundary accepts Municibid and rejects unrelated host',()=>{expect(mod.isMunicibidUrl('https://municibid.com/browse')).toBe(true);expect(mod.isMunicibidUrl('https://example.com')).toBe(false);});

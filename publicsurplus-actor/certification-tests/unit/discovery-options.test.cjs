@@ -1,0 +1,2 @@
+const fs=require('fs');const path=require('path');let mod;beforeAll(async()=>{mod=await import('../../src/publicsurplus/discovery.js')});
+test('option-based region and agency navigation is discovered',()=>{const html=fs.readFileSync(path.join(__dirname,'../fixtures/publicsurplus-option-navigation.html'),'utf8');const links=mod.parseDiscoveryLinks(html,'https://www.publicsurplus.com/sms/browse/home');const parts=links.map(x=>x.partition);expect(parts.some(x=>x.startsWith('region:'))).toBe(true);expect(parts.some(x=>x.startsWith('agency:'))).toBe(true);});

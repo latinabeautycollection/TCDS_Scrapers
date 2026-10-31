@@ -1,0 +1,156 @@
+{
+  "generated_at": "2026-10-25T11:06:58.281Z",
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "govdeals_normalizes_as_source",
+      "pass": true,
+      "detail": "govdeals"
+    },
+    {
+      "name": "govdeals_infers_auction_listing",
+      "pass": true,
+      "detail": "auction_listing"
+    },
+    {
+      "name": "unified_record_validates",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "propertyroom_source_regression",
+      "pass": true,
+      "detail": "propertyroom/auction_listing"
+    },
+    {
+      "name": "countdown_excluded_from_hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "end_time_mutation_changes_hash",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_new_processes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_same_skips",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_changed_reprocesses",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dedupe_source_is_govdeals",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sql_export_source_govdeals",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "sql_export_propertyroom_regression",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "healthy_run_health_pass",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "parser_collapse_fails",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "single_rejected_lot_degrades_without_failing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "zero_usable_records_fails",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "published_free_shipping_is_zero_cost_and_shippable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "negative_free_shipping_is_not_zero_cost",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "shipping_quote_from_positive_listing_text_overrides_false_flag",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "shipping_price_from_listing_text_overrides_false_flag",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "coded_model_is_also_mpn",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "explicit_catalog_number_maps_to_mpn_not_serial",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recheck_accepts_govdeals_ids_and_urls",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recheck_targets_only_and_bypasses_unchanged_skip",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "shipping_method_accepts_four_client_values",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dataset_write_precedes_dedupe_commit",
+      "pass": true,
+      "detail": "12089/12267"
+    },
+    {
+      "name": "no_price_only_early_skip_call",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "proxy_fail_closed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "crawl_failure_rethrown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "required_webhook_fail_closed",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "version": "1.1.8",
+  "tests": [
+    {
+      "file": "certification-tests/contracts/normalize-contract.test.cjs",
+      "sha256": "b2751c7a765b3ebbf42e3ef1982e32a1fca5a9f4594835b52f53e1498976cea4"
+    },
+    {
+      "file": "certification-tests/integration/liquidation-v11-hardening.test.cjs",
+      "sha256": "bb023f211c382ec423fd9b4e7f914de26fcb867fad70ba12237884690ff15ce9"
+    },
+    {
+      "file": "certification-tests/integration/parser.test.cjs",
+      "sha256": "8a0b8a1b3f7183d8aa7c0873933e8dd864501af36b0618436e696ce2ee73c81d"
+    },
+    {
+      "file": "certification-tests/unit/circuitBreaker.test.cjs",
+      "sha256": "7ecf231a397bc188e03aada41514cad38aeb93bfcdcdbfd58d385777e4d690b2"
+    },
+    {
+      "file": "certification-tests/unit/completeness.test.mjs",
+      "sha256": "85765892994e678f08068e56b2a63c2bc6158aa4763583dcfa5dfb220cd0e18c"
+    },
+    {
+      "file": "certification-tests/unit/discovery.test.cjs",
+      "sha256": "7491392f7a83c790e7a77d2c3ad3fe8d2dedcc1033d5771e5856ca9e8280c5e2"
+    },
+    {
+      "file": "certification-tests/unit/fieldRules.test.mjs",
+      "sha256": "3bda9ed852230736c62bb7d54926277d936db537fce64465b02a3b99d4280264"
+    },
+    {
+      "file": "certification-tests/unit/fingerprint.test.cjs",
+      "sha256": "dd485f03934c1333cd68ff092114a666150226af708700e7f1a6a363e256bc3e"
+    },
+    {
+      "file": "certification-tests/unit/health.test.cjs",
+      "sha256": "c23ea7ed452966c4c5a8520fa85c653ff9b1f5066a6ff9baf9e08c668575e1c3"
+    },
+    {
+      "file": "certification-tests/unit/recovery.test.cjs",
+      "sha256": "a365bc9934a04ca2c2d92acda83f40251336578ecfa8fc6ceb239ea507703610"
+    },
+    {
+      "file": "certification-tests/unit/url.test.cjs",
+      "sha256": "c87f138ef5ef38b16196ea7ac9f9f71985690990f74f515d80444eebc1ebeb22"
+    }
+  ]
+}

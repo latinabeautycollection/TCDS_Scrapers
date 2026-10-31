@@ -1,0 +1,2 @@
+let mod; beforeAll(async()=>{mod=await import('../../src/municibid/discovery.js')});
+test('query-style region and category filters receive governed partitions',()=>{const html='<a href="/browse?region=3777831">PA</a><a href="/browse?category=5764318">Ambulances</a>';const r=mod.parseDiscoveryLinks(html,'https://municibid.com/browse');const parts=r.map(x=>x.partition);expect(parts).toContain('region_query:3777831');expect(parts).toContain('category_query:5764318');});

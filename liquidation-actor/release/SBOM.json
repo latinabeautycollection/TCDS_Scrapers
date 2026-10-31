@@ -1,0 +1,47 @@
+{
+  "actor": "liquidation",
+  "version": "1.1.8",
+  "packages": [
+    {
+      "name": "apify",
+      "version_spec": "^3.4.0",
+      "scope": "direct"
+    },
+    {
+      "name": "cheerio",
+      "version_spec": "^1.2.0",
+      "scope": "direct"
+    },
+    {
+      "name": "crawlee",
+      "version_spec": "^3.13.0",
+      "scope": "direct"
+    },
+    {
+      "name": "csv-writer",
+      "version_spec": "^1.6.0",
+      "scope": "direct"
+    },
+    {
+      "name": "googleapis",
+      "version_spec": "^144.0.0",
+      "scope": "direct"
+    },
+    {
+      "name": "eslint",
+      "version_spec": "^9.12.0",
+      "scope": "dev"
+    },
+    {
+      "name": "jest",
+      "version_spec": "^29.7.0",
+      "scope": "dev"
+    },
+    {
+      "name": "prettier",
+      "version_spec": "^3.3.3",
+      "scope": "dev"
+    }
+  ],
+  "vulnerability_status": "NOT_VERIFIED_REQUIRES_NPM_AUDIT"
+}

@@ -1,0 +1,3 @@
+# Reference Alignment Report
+
+Liquidation V1.1 remains a narrow source adapter inside the certified PropertyRoom-family architecture. Recovery, source DLQ, circuit breaker, single-writer/fencing, Dataset-before-dedupe ordering, webhook/export path, and PASS/DEGRADED/INCOMPLETE/FAIL semantics are preserved. V1.1 changes are confined to Liquidation source parsing/discovery/manifest handling, additive `manifest_item` record support, production release binding, tests, and metadata. Shared family concerns such as fail-soft DedupeManager persistence were intentionally not forked in Liquidation.

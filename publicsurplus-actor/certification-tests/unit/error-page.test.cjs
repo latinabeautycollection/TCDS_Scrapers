@@ -1,0 +1,2 @@
+let looksLikeErrorPage; beforeAll(async()=>({looksLikeErrorPage}=await import('../../src/publicsurplus/parser.js')));
+test('maintenance/login/access pages are not accepted as auction HTML',()=>{expect(looksLikeErrorPage('<html><title>Maintenance</title><body>Temporarily unavailable</body></html>')).toBe(true);expect(looksLikeErrorPage('<html><title>Login</title><body>Sign in</body></html>')).toBe(true);});

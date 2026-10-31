@@ -1,0 +1,50 @@
+{
+  "sourceName": "municibid",
+  "runLabel": "qa-real-pages-1.3.7",
+  "discoveryMode": "TARGETED",
+  "startUrls": [
+    {
+      "url": "https://municibid.com/listing/86222247"
+    },
+    {
+      "url": "https://municibid.com/listing/85893128"
+    },
+    {
+      "url": "https://municibid.com/listing/86377249"
+    },
+    {
+      "url": "https://municibid.com/listing/86379242"
+    },
+    {
+      "url": "https://municibid.com/listing/85542547"
+    },
+    {
+      "url": "https://municibid.com/listing/85541128"
+    },
+    {
+      "url": "https://municibid.com/listing/86378897"
+    },
+    {
+      "url": "https://municibid.com/listing/86378520"
+    },
+    {
+      "url": "https://municibid.com/listing/86377802"
+    },
+    {
+      "url": "https://municibid.com/listing/86251253"
+    },
+    {
+      "url": "https://municibid.com/listing/86378147"
+    }
+  ],
+  "keywords": [],
+  "maxItemsPerRun": 11,
+  "maxDetailRequests": 11,
+  "maxDiscoveryRequests": 1,
+  "maxPages": 1,
+  "maxRuntimeMinutes": 10,
+  "maxConcurrency": 1,
+  "recordPages": true,
+  "proxyEnabled": false,
+  "ebayEnabled": false
+}

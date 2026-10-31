@@ -1,0 +1,464 @@
+{
+  "title": "Municibid Acquisition Intelligence Pipeline — Input",
+  "description": "Configure Municibid exhaustive/targeted discovery, active auction extraction, resilient recovery, optional completed-history capture, eBay comp enrichment, webhook delivery, dedupe behavior, and governed exports.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "sourceName": {
+      "title": "Source Name",
+      "type": "string",
+      "description": "Logical source label for this run. Useful for auditability and downstream lineage.",
+      "editor": "textfield",
+      "default": "municibid"
+    },
+    "runLabel": {
+      "title": "Run Label",
+      "type": "string",
+      "description": "Optional operator label for this run, such as 'phones-test-run' or 'nightly-auction-scan'.",
+      "editor": "textfield",
+      "nullable": true
+    },
+    "startUrls": {
+      "title": "Start URLs",
+      "type": "array",
+      "description": "Optional Municibid browse/search/detail URLs. In EXHAUSTIVE mode these are additive to governed catalog discovery; in TARGETED mode they define the crawl scope.",
+      "editor": "requestListSources",
+      "default": []
+    },
+    "keywords": {
+      "title": "Keywords",
+      "type": "array",
+      "description": "Optional local title/card filters. Municibid keyword runs crawl governed browse pages and queue only matching discovered listings; no unverified private search route is assumed.",
+      "editor": "stringList",
+      "default": []
+    },
+    "discoveryMode": {
+      "title": "Discovery Mode",
+      "type": "string",
+      "description": "EXHAUSTIVE discovers active Municibid inventory across global browse, newest, most-bid, map, state/category and seller surfaces. TARGETED uses supplied start URLs/keywords.",
+      "enum": [
+        "EXHAUSTIVE",
+        "TARGETED"
+      ],
+      "default": "EXHAUSTIVE"
+    },
+    "includeSellerPartitions": {
+      "title": "Include Seller Partitions",
+      "type": "boolean",
+      "description": "In EXHAUSTIVE mode, traverse seller-specific Municibid browse partitions discovered from active catalog pages for coverage reconciliation.",
+      "default": true
+    },
+    "includeCategoryPartitions": {
+      "title": "Include Category/State Partitions",
+      "type": "boolean",
+      "description": "In EXHAUSTIVE mode, traverse Municibid category and state/region browse partitions discovered from the live site.",
+      "default": true
+    },
+    "includeCompleted": {
+      "title": "Include Completed Listings",
+      "type": "boolean",
+      "description": "Also traverse Municibid completed listings. Disabled by default because acquisition operations normally targets active opportunities.",
+      "default": false
+    },
+    "maxPages": {
+      "title": "Max Pagination Depth",
+      "type": "integer",
+      "description": "Maximum pagination depth per discovery partition. Use 0 for unlimited. EXHAUSTIVE production default is unlimited.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 100000
+    },
+    "maxDiscoveryRequests": {
+      "title": "Max Discovery Requests",
+      "type": "integer",
+      "description": "Optional hard cap for index/discovery requests. Use 0 for unlimited. Any truncation in EXHAUSTIVE mode makes the run incomplete.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "maxDetailRequests": {
+      "title": "Max Detail Requests",
+      "type": "integer",
+      "description": "Optional hard cap for lot-detail requests. Use 0 for unlimited. Any truncation in EXHAUSTIVE mode makes the run incomplete and checkpoint-resumable.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 1000000
+    },
+    "maxRuntimeMinutes": {
+      "title": "Max Runtime Minutes",
+      "type": "integer",
+      "description": "Optional source runtime ceiling. Use 0 for no actor-level ceiling; interrupted exhaustive runs remain checkpoint-resumable.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 10080
+    },
+    "maxItemsPerRun": {
+      "title": "Max Items per Run",
+      "type": "integer",
+      "description": "Legacy accepted-record safety cap. Use 0 for unlimited. A non-zero cap that truncates an EXHAUSTIVE run prevents PASS and leaves checkpointed work for resume.",
+      "default": 0,
+      "minimum": 0,
+      "maximum": 50000
+    },
+    "maxConcurrency": {
+      "title": "Max Concurrency",
+      "type": "integer",
+      "description": "Maximum parallel HTTP requests. Use 1 for the next memory-limited verification run.",
+      "default": 1,
+      "minimum": 1,
+      "maximum": 20
+    },
+    "requestTimeoutSecs": {
+      "title": "Request Timeout (seconds)",
+      "type": "integer",
+      "description": "Per-page timeout before retrying.",
+      "default": 60,
+      "minimum": 15,
+      "maximum": 300
+    },
+    "maxRequestRetries": {
+      "title": "Max Request Retries",
+      "type": "integer",
+      "description": "How many times to retry a failed page request before giving up.",
+      "default": 3,
+      "minimum": 0,
+      "maximum": 10
+    },
+    "recoveryPersistInterval": {
+      "title": "Recovery Persist Interval",
+      "type": "integer",
+      "description": "Persist Municibid discovery/checkpoint/reconciliation state after this many state mutations.",
+      "default": 100,
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "circuitBreaker403Threshold": {
+      "title": "403 Circuit Breaker Threshold",
+      "type": "integer",
+      "description": "Open the Municibid source circuit after this many consecutive HTTP 403 responses.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "circuitBreaker5xxThreshold": {
+      "title": "5xx Circuit Breaker Threshold",
+      "type": "integer",
+      "description": "Open the source circuit after this many consecutive upstream 5xx responses.",
+      "default": 20,
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "circuitBreaker429Threshold": {
+      "title": "429 Circuit Breaker Threshold",
+      "type": "integer",
+      "description": "Open the source circuit after this many rate-limit events in one run.",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 1000
+    },
+    "proxyEnabled": {
+      "title": "Enable Proxy",
+      "type": "boolean",
+      "description": "Use an Apify proxy when explicitly enabled. Direct HTTP is the default, matching the certified PropertyRoom transport policy.",
+      "default": false
+    },
+    "proxyGroups": {
+      "title": "Proxy Groups",
+      "type": "array",
+      "description": "Apify proxy groups to use.",
+      "editor": "stringList",
+      "default": []
+    },
+    "proxyFallbackToDirect": {
+      "title": "Allow Explicit Proxy Fallback to Direct",
+      "type": "boolean",
+      "description": "If proxy setup fails, allow direct transport only when explicitly enabled. Default is fail-closed.",
+      "default": false
+    },
+    "singleWriterLeaseEnabled": {
+      "title": "Single-Writer State Lease",
+      "type": "boolean",
+      "description": "Prevent concurrent exhaustive Municibid runs from mutating the same persistent recovery/dedupe state.",
+      "default": true
+    },
+    "runLeaseTtlMinutes": {
+      "title": "Run Lease TTL (minutes)",
+      "type": "integer",
+      "description": "Expiration window for the Municibid single-writer KV lease. Stale leases may be reclaimed after this interval.",
+      "default": 30,
+      "minimum": 1,
+      "maximum": 1440
+    },
+    "completedEvidenceRetainEntries": {
+      "title": "Completed Recovery Evidence Retention",
+      "type": "integer",
+      "description": "Number of completed discovery/disposition entries retained in compacted recovery state after a successful run. Final reconciliation and completion manifest remain preserved separately.",
+      "default": 1000,
+      "minimum": 0,
+      "maximum": 100000
+    },
+    "dedupePersistInterval": {
+      "title": "Dedupe Persist Interval",
+      "type": "integer",
+      "description": "How many processed records to accumulate before persisting dedupe state.",
+      "default": 500,
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "enableFingerprintRefresh": {
+      "title": "Enable Fingerprint Refresh",
+      "type": "boolean",
+      "description": "Reprocess a listing if its content fingerprint changes across runs.",
+      "default": true
+    },
+    "enableStaleRefresh": {
+      "title": "Enable Stale Refresh",
+      "type": "boolean",
+      "description": "Reprocess a listing after it becomes stale, even if unchanged.",
+      "default": true
+    },
+    "staleAfterMinutes": {
+      "title": "Stale Refresh Threshold (minutes)",
+      "type": "integer",
+      "description": "Minutes after which an unchanged listing becomes eligible for refresh.",
+      "default": 60,
+      "minimum": 5,
+      "maximum": 100800
+    },
+    "debug": {
+      "title": "Debug Mode",
+      "type": "boolean",
+      "description": "Enable verbose logging and extraction diagnostics.",
+      "default": false
+    },
+    "webhookUrl": {
+      "title": "Webhook URL",
+      "type": "string",
+      "description": "HTTP(S) endpoint to POST normalized records to.",
+      "editor": "textfield",
+      "nullable": true
+    },
+    "webhookAuthToken": {
+      "title": "Webhook Auth Token",
+      "type": "string",
+      "description": "Bearer token used for webhook authorization.",
+      "editor": "textfield",
+      "isSecret": true,
+      "nullable": true
+    },
+    "webhookBatchSize": {
+      "title": "Webhook Batch Size",
+      "type": "integer",
+      "description": "Number of records per webhook POST.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 500
+    },
+    "webhookMaxRetries": {
+      "title": "Webhook Max Retries",
+      "type": "integer",
+      "description": "Maximum retries on retryable webhook failures.",
+      "default": 5,
+      "minimum": 0,
+      "maximum": 20
+    },
+    "webhookTimeoutMs": {
+      "title": "Webhook Timeout (ms)",
+      "type": "integer",
+      "description": "Per-request timeout for webhook delivery.",
+      "default": 30000,
+      "minimum": 1000,
+      "maximum": 120000
+    },
+    "webhookReplayDeadLetterOnStart": {
+      "title": "Replay Dead Letter on Start",
+      "type": "boolean",
+      "description": "Attempt replay of dead-letter webhook batches at the start of a run.",
+      "default": false
+    },
+    "webhookDeliveryRequired": {
+      "title": "Require Webhook Delivery",
+      "type": "boolean",
+      "description": "Fail the Actor run if any webhook batch cannot be delivered after configured retries.",
+      "default": false
+    },
+    "ebayEnabled": {
+      "title": "Enable eBay Integration",
+      "type": "boolean",
+      "description": "Fetch eBay listings and/or comps.",
+      "default": false
+    },
+    "ebayClientId": {
+      "title": "eBay Client ID",
+      "type": "string",
+      "description": "eBay Developer Client ID / App ID.",
+      "editor": "textfield",
+      "isSecret": true,
+      "nullable": true
+    },
+    "ebayClientSecret": {
+      "title": "eBay Client Secret",
+      "type": "string",
+      "description": "OAuth Client Secret for eBay token exchange.",
+      "editor": "textfield",
+      "isSecret": true,
+      "nullable": true
+    },
+    "ebayEnvironment": {
+      "title": "eBay Environment",
+      "type": "string",
+      "description": "Use production for live data or sandbox for testing.",
+      "enum": [
+        "production",
+        "sandbox"
+      ],
+      "default": "production"
+    },
+    "ebayQueries": {
+      "title": "eBay Search Queries",
+      "type": "array",
+      "description": "Search keywords for eBay enrichment.",
+      "editor": "stringList",
+      "default": []
+    },
+    "ebayCategoryIds": {
+      "title": "eBay Category IDs",
+      "type": "array",
+      "description": "Category IDs for eBay listing retrieval.",
+      "editor": "stringList",
+      "default": []
+    },
+    "ebayMaxResults": {
+      "title": "eBay Max Results per Query",
+      "type": "integer",
+      "description": "Maximum total listings per eBay query.",
+      "default": 1000,
+      "minimum": 1,
+      "maximum": 10000
+    },
+    "ebayIncludeSoldComps": {
+      "title": "Include eBay Sold Comps",
+      "type": "boolean",
+      "description": "Also fetch completed/sold listings from eBay as comparables.",
+      "default": false
+    },
+    "csvExportEnabled": {
+      "title": "Enable CSV Export",
+      "type": "boolean",
+      "description": "Export normalized records to CSV after completion.",
+      "default": false
+    },
+    "csvExportProfile": {
+      "title": "CSV Export Profile",
+      "type": "string",
+      "description": "Column profile to use for CSV export.",
+      "enum": [
+        "overview",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
+      "default": "overview"
+    },
+    "csvOutputDir": {
+      "title": "CSV Output Directory",
+      "type": "string",
+      "description": "Directory path for exported CSV files.",
+      "editor": "textfield",
+      "default": "./output"
+    },
+    "csvFileName": {
+      "title": "CSV File Name",
+      "type": "string",
+      "description": "Name of the exported CSV file.",
+      "editor": "textfield",
+      "default": "municibid_export.csv"
+    },
+    "googleSheetId": {
+      "title": "Google Sheet ID",
+      "type": "string",
+      "description": "Spreadsheet ID from the Google Sheets URL.",
+      "editor": "textfield",
+      "nullable": true
+    },
+    "googleSheetName": {
+      "title": "Google Sheet Tab Name",
+      "type": "string",
+      "description": "Name of the sheet/tab to write data to.",
+      "editor": "textfield",
+      "default": "Sheet1"
+    },
+    "googleSheetsExportProfile": {
+      "title": "Google Sheets Export Profile",
+      "type": "string",
+      "description": "Column profile to use for Google Sheets export.",
+      "enum": [
+        "overview",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
+      "default": "overview"
+    },
+    "googleServiceAccountKey": {
+      "title": "Google Service Account Key",
+      "type": "string",
+      "description": "Service account JSON string or file path.",
+      "editor": "textfield",
+      "isSecret": true,
+      "nullable": true
+    },
+    "sqlExportEnabled": {
+      "title": "Enable SQL Export",
+      "type": "boolean",
+      "description": "Generate a SQL ingest file after the crawl completes.",
+      "default": false
+    },
+    "sqlExportProfile": {
+      "title": "SQL Export Profile",
+      "type": "string",
+      "description": "Logical SQL export profile for batch generation.",
+      "enum": [
+        "overview",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
+      "default": "overview"
+    },
+    "sqlWrapInTransaction": {
+      "title": "Wrap SQL Export in Transaction",
+      "type": "boolean",
+      "description": "Wrap generated SQL statements in BEGIN/COMMIT.",
+      "default": true
+    },
+    "sqlOutputDir": {
+      "title": "SQL Output Directory",
+      "type": "string",
+      "description": "Directory path for SQL export files.",
+      "editor": "textfield",
+      "default": "./output"
+    },
+    "sqlFileName": {
+      "title": "SQL File Name",
+      "type": "string",
+      "description": "Name of the SQL output file.",
+      "editor": "textfield",
+      "default": "municibid_ingest.sql"
+    },
+    "recordPages": {
+      "title": "Record real page HTML",
+      "type": "boolean",
+      "default": false,
+      "description": "Saves the HTML of the first 4 pages fetched to the key-value store as FIXTURE_html_* so real fixtures can replace the synthetic test pages."
+    },
+    "recheckLots": {
+      "title": "Recheck Lots",
+      "type": "array",
+      "description": "Open Municibid lot URLs or IDs. Fetch exactly these lots and bypass unchanged-record dedupe. Closed lots are skipped when includeCompleted is false.",
+      "editor": "stringList",
+      "default": []
+    }
+  },
+  "required": []
+}

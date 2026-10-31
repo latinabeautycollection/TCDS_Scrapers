@@ -1,0 +1,33 @@
+{
+  "version": "1.1.8",
+  "fixtures": [
+    {
+      "file": "certification-tests/fixtures/liquidation-cad.html",
+      "sha256": "2b139e2bad4782b1f22aaf652d833a8a65dd925baf2611f8517625487461bf1b"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-detail.html",
+      "sha256": "e41be8842310cecdbc40bef552cafd5afb27114b14572aaa313be819b8c588be"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-manifest.html",
+      "sha256": "d342d79b7df72ee9e660e66fa5dc96be6fdfda3ed5a2a46c5a6881803c35a0f9"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-mixed-buy-now.html",
+      "sha256": "c0ba198ac77f6e83a374a9b4eb280f1bcd74ef39cd06eda12b447aed3794350a"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-required-fields.html",
+      "sha256": "0ed381537275fc249eea9a03d6c8845088199b81d42c1ddc86037e81a86e919a"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-sealed.html",
+      "sha256": "2c817e6c893fc011a04da6df02ceb786081bc90258652d3508418f40ac8c9b05"
+    },
+    {
+      "file": "certification-tests/fixtures/liquidation-search.html",
+      "sha256": "a23234af19dc0aa0e168834355f84434ff6ec3e0ff07865fefe73a0a498fd689"
+    }
+  ]
+}

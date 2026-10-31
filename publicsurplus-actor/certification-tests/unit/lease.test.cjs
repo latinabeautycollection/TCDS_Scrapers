@@ -1,0 +1,3 @@
+let PublicSurplusRunLease,RUN_LEASE_KEY; beforeAll(async()=>({PublicSurplusRunLease,RUN_LEASE_KEY}=await import('../../src/publicsurplus/lease.js')));
+function kv(){const d={};return {async getValue(k){return d[k]??null},async setValue(k,v){if(v===null)delete d[k];else d[k]=JSON.parse(JSON.stringify(v))},d};}
+test('single writer lease blocks concurrent run and releases cleanly',async()=>{const store=kv();const a=new PublicSurplusRunLease(store,{runId:'a',ttlMs:60000});const b=new PublicSurplusRunLease(store,{runId:'b',ttlMs:60000});await a.acquire();await expect(b.acquire()).rejects.toThrow(/ACTIVE_RUN_LEASE_HELD/);await a.release();await expect(b.acquire()).resolves.toMatchObject({acquired:true});expect(store.d[RUN_LEASE_KEY].owner_run_id).toBe('b');});

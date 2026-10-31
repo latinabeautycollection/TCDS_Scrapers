@@ -1,0 +1,170 @@
+{
+  "actorSpecification": 1,
+  "name": "propertyroom-ebay-pipeline",
+  "title": "PropertyRoom Acquisition Intelligence & eBay Comp Engine",
+  "description": "Enterprise acquisition-intelligence actor that scrapes PropertyRoom auction listings, retrieves eBay comparable listings, normalizes all records into a governed unified schema, and delivers audit-ready outputs for arbitrage scoring, export, webhook delivery, and downstream database ingestion.",
+  "version": "1.0.0",
+  "buildTag": "release-1.0.0",
+  "environmentVariables": {
+    "NODE_ENV": "production",
+    "PIPELINE_ENV": "production",
+    "DEFAULT_SCHEMA_NAME": "arb.unified_listing.v1",
+    "DEFAULT_SCHEMA_VERSION": "1",
+    "DEFAULT_CURRENCY": "USD",
+    "RUN_ALERTS_ENABLED": "false",
+    "RUN_ALERT_WEBHOOK_URL": "",
+    "RUN_ALERT_AUTH_TOKEN": "",
+    "WEBHOOK_DELIVERY_REQUIRED": "false",
+    "EXPORT_SQL_ENABLED": "true",
+    "EXPORT_CSV_ENABLED": "true",
+    "DEDUPE_PERSIST_INTERVAL": "500",
+    "ZERO_RESULTS_ALERT_THRESHOLD": "1"
+  },
+  "dockerfile": "./Dockerfile",
+  "input": "../INPUT_SCHEMA.json",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "title": "Unified Acquisition Records",
+      "description": "Governed normalized records originating from PropertyRoom auction listings, eBay comparable listings, and downstream arbitrage evaluation outputs.",
+      "views": {
+        "overview": {
+          "title": "Overview",
+          "description": "Executive cross-source operator view of all normalized records.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "total_estimated_cost",
+              "auction_end_time",
+              "location",
+              "risk_score",
+              "purchase_recommendation",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "propertyroom_listings": {
+          "title": "PropertyRoom Listings",
+          "description": "Source auction records extracted from PropertyRoom.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "title",
+              "category",
+              "subcategory",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "tax_estimate",
+              "total_estimated_cost",
+              "auction_end_time",
+              "location",
+              "currency",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "ebay_comps": {
+          "title": "eBay Comparable Listings",
+          "description": "Comparable market listings and sold comps retrieved from eBay.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "estimated_shipping",
+              "currency",
+              "listing_type",
+              "sold_status",
+              "comp_query",
+              "auction_end_time",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "arbitrage_candidates": {
+          "title": "Arbitrage Candidates",
+          "description": "Decision-ready opportunities enriched with cost, resale, margin, and recommendation outputs.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "tax_estimate",
+              "total_estimated_cost",
+              "median_comp_price",
+              "avg_comp_price",
+              "estimated_ebay_fees",
+              "estimated_profit",
+              "estimated_margin_pct",
+              "risk_score",
+              "confidence_score",
+              "purchase_recommendation",
+              "decision_reason",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "audit_trace": {
+          "title": "Audit Trace",
+          "description": "Operational traceability, lineage, integrity, and pipeline metadata.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "dedupe_key",
+              "content_hash",
+              "normalization_status",
+              "input_fingerprint",
+              "actor_run_id",
+              "actor_build_id",
+              "actor_task_id",
+              "pipeline_stage",
+              "scraped_at",
+              "observed_at"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

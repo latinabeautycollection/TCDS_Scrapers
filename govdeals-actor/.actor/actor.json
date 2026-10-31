@@ -1,0 +1,213 @@
+{
+  "actorSpecification": 1,
+  "name": "govdeals-actor",
+  "title": "GovDeals Acquisition Intelligence & eBay Comp Engine",
+  "description": "Enterprise acquisition-intelligence actor that scrapes GovDeals auction listings, retrieves eBay comparable listings, normalizes all records into a governed unified schema, and delivers audit-ready outputs for arbitrage scoring, export, webhook delivery, and downstream database ingestion.",
+  "version": "1.4.6",
+  "buildTag": "release-1.4.6",
+  "environmentVariables": {
+    "NODE_ENV": "production",
+    "PIPELINE_ENV": "production",
+    "DEFAULT_SCHEMA_NAME": "arb.unified_listing.v1",
+    "DEFAULT_SCHEMA_VERSION": "1",
+    "DEFAULT_CURRENCY": "USD",
+    "RUN_ALERTS_ENABLED": "false",
+    "RUN_ALERT_WEBHOOK_URL": "",
+    "RUN_ALERT_AUTH_TOKEN": "",
+    "WEBHOOK_DELIVERY_REQUIRED": "false",
+    "EXPORT_SQL_ENABLED": "true",
+    "EXPORT_CSV_ENABLED": "true",
+    "DEDUPE_PERSIST_INTERVAL": "500",
+    "ZERO_RESULTS_ALERT_THRESHOLD": "1"
+  },
+  "dockerfile": "./Dockerfile",
+  "input": "../INPUT_SCHEMA.json",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "title": "Unified Acquisition Records",
+      "description": "Governed normalized records originating from GovDeals auction listings, eBay comparable listings, and downstream arbitrage evaluation outputs.",
+      "views": {
+        "overview": {
+          "title": "Overview",
+          "description": "Executive cross-source operator view of all normalized records.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "mpn",
+              "model",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "total_estimated_cost",
+              "auction_end_time",
+              "location",
+              "risk_score",
+              "purchase_recommendation",
+              "scraped_at",
+              "actor_run_id",
+              "attributes",
+              "shipping_method",
+              "auction_start_time"
+            ]
+          }
+        },
+        "govdeals_listings": {
+          "title": "GovDeals Listings",
+          "description": "Source auction records extracted from GovDeals.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "mpn",
+              "model",
+              "title",
+              "category",
+              "subcategory",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "tax_estimate",
+              "total_estimated_cost",
+              "auction_end_time",
+              "location",
+              "currency",
+              "scraped_at",
+              "actor_run_id",
+              "attributes",
+              "shipping_method",
+              "auction_start_time",
+              "source_record"
+            ]
+          }
+        },
+        "ebay_comps": {
+          "title": "eBay Comparable Listings",
+          "description": "Comparable market listings and sold comps retrieved from eBay.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "estimated_shipping",
+              "currency",
+              "listing_type",
+              "sold_status",
+              "comp_query",
+              "auction_end_time",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "arbitrage_candidates": {
+          "title": "Arbitrage Candidates",
+          "description": "Decision-ready opportunities enriched with cost, resale, margin, and recommendation outputs.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "title",
+              "category",
+              "condition",
+              "current_price",
+              "buyers_premium",
+              "estimated_shipping",
+              "tax_estimate",
+              "total_estimated_cost",
+              "median_comp_price",
+              "avg_comp_price",
+              "estimated_ebay_fees",
+              "estimated_profit",
+              "estimated_margin_pct",
+              "risk_score",
+              "confidence_score",
+              "purchase_recommendation",
+              "decision_reason",
+              "scraped_at",
+              "actor_run_id"
+            ]
+          }
+        },
+        "audit_trace": {
+          "title": "Audit Trace",
+          "description": "Operational traceability, lineage, integrity, and pipeline metadata.",
+          "transformation": {
+            "fields": [
+              "schema",
+              "schema_version",
+              "record_type",
+              "source",
+              "external_id",
+              "listing_url",
+              "dedupe_key",
+              "content_hash",
+              "normalization_status",
+              "input_fingerprint",
+              "actor_run_id",
+              "actor_build_id",
+              "actor_task_id",
+              "pipeline_stage",
+              "scraped_at",
+              "observed_at",
+              "source_record"
+            ]
+          }
+        },
+        "auction_logistics": {
+          "title": "Auction Logistics",
+          "description": "GovDeals logistics, inspection, pickup, seller, and bidder-eligibility intelligence.",
+          "transformation": {
+            "fields": [
+              "source",
+              "external_id",
+              "listing_url",
+              "model",
+              "mpn",
+              "title",
+              "seller_name",
+              "location",
+              "shipping_available",
+              "shipping_method",
+              "pickup_required",
+              "pickup_location",
+              "inspection_available",
+              "inspection_details",
+              "payment_terms",
+              "attributes",
+              "removal_requirements",
+              "bidding_allowed",
+              "bidding_eligibility",
+              "bidding_restriction_message",
+              "auction_end_time",
+              "scraped_at",
+              "estimated_shipping"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

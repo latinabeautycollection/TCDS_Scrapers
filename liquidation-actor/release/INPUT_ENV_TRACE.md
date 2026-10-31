@@ -1,0 +1,73 @@
+# Input / Environment Trace
+
+## Actor inputs
+- `sourceName`
+- `runLabel`
+- `startUrls`
+- `keywords`
+- `discoveryMode`
+- `includeSellerPartitions`
+- `includeCategoryPartitions`
+- `includeCompleted`
+- `maxPages`
+- `maxDiscoveryRequests`
+- `maxDetailRequests`
+- `maxRuntimeMinutes`
+- `maxItemsPerRun`
+- `maxConcurrency`
+- `requestTimeoutSecs`
+- `maxRequestRetries`
+- `recoveryPersistInterval`
+- `circuitBreaker403Threshold`
+- `circuitBreaker5xxThreshold`
+- `circuitBreaker429Threshold`
+- `proxyEnabled`
+- `proxyGroups`
+- `proxyFallbackToDirect`
+- `singleWriterLeaseEnabled`
+- `runLeaseTtlMinutes`
+- `completedEvidenceRetainEntries`
+- `dedupePersistInterval`
+- `enableFingerprintRefresh`
+- `enableStaleRefresh`
+- `staleAfterMinutes`
+- `debug`
+- `webhookUrl`
+- `webhookAuthToken`
+- `webhookBatchSize`
+- `webhookMaxRetries`
+- `webhookTimeoutMs`
+- `webhookReplayDeadLetterOnStart`
+- `webhookDeliveryRequired`
+- `ebayEnabled`
+- `ebayClientId`
+- `ebayClientSecret`
+- `ebayEnvironment`
+- `ebayQueries`
+- `ebayCategoryIds`
+- `ebayMaxResults`
+- `ebayIncludeSoldComps`
+- `csvExportEnabled`
+- `csvExportProfile`
+- `csvOutputDir`
+- `csvFileName`
+- `googleSheetId`
+- `googleSheetName`
+- `googleSheetsExportProfile`
+- `googleServiceAccountKey`
+- `sqlExportEnabled`
+- `sqlExportProfile`
+- `sqlWrapInTransaction`
+- `sqlOutputDir`
+- `sqlFileName`
+
+## Environment variables
+- `NODE_ENV`
+- `DEFAULT_SCHEMA_NAME`
+- `DEFAULT_SCHEMA_VERSION`
+- `DEFAULT_CURRENCY`
+- `WEBHOOK_DELIVERY_REQUIRED`
+- `ZERO_RESULTS_ALERT_THRESHOLD`
+- `RELEASE_ARTIFACT_SHA256`
+
+All secret-bearing values are supplied at runtime and are not embedded in source.

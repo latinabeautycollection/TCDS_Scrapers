@@ -1,0 +1,2 @@
+const fs=require('fs'); const path=require('path');let parseDetailPage;beforeAll(async()=>({parseDetailPage}=await import('../../src/publicsurplus/parser.js')));
+test('fixed-price listings are classified separately from auction strategy',()=>{const h=fs.readFileSync(path.join(__dirname,'../fixtures/publicsurplus-detail.html'),'utf8').replace('</body>','<div>Fixed Price</div></body>');const r=parseDetailPage(h,'https://www.publicsurplus.com/sms/auction/view?auc=4098818','2026-10-08T12:00:00.000Z');expect(r.listing_type).toBe('FIXED_PRICE');});

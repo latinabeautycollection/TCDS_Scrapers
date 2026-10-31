@@ -1,0 +1,156 @@
+{
+  "version": "1.3.0",
+  "generated_at": "2026-10-10T01:45:24.178160+00:00",
+  "tests": [
+    {
+      "file": "certification-tests/contracts/normalize-contract.test.cjs",
+      "sha256": "314b59ad8cb20789b89c488f5432cbcd32d029fae9ff68f1c6f5c15a8d99113a",
+      "purpose": "normalize contract.test"
+    },
+    {
+      "file": "certification-tests/contracts/sql-source.test.cjs",
+      "sha256": "b743de109079a5284591c6dbc83dee29b69c19fc31c49de93b754b14dd665c6a",
+      "purpose": "sql source.test"
+    },
+    {
+      "file": "certification-tests/integration/fail-closed.test.cjs",
+      "sha256": "912cfd6a7cc59b8af47e17fd6ea3485112a9406c635f948b7ed93c31e16d22bc",
+      "purpose": "fail closed.test"
+    },
+    {
+      "file": "certification-tests/integration/fortune500-controls.test.cjs",
+      "sha256": "11c1caa655b28bc687679c41eff81b188c8ce0e7210ecb0968352e9635062f75",
+      "purpose": "fortune500 controls.test"
+    },
+    {
+      "file": "certification-tests/integration/parser.test.cjs",
+      "sha256": "e4f26a72a499b02b64b236e419e8f53ec2202221ef359b08a38afd4f0591f072",
+      "purpose": "parser.test"
+    },
+    {
+      "file": "certification-tests/integration/persistence-order.test.cjs",
+      "sha256": "1ab5363917f6a68481ca54b75d9094853f65bd121ce29cb5624cb79869d2a566",
+      "purpose": "persistence order.test"
+    },
+    {
+      "file": "certification-tests/unit/circuitBreaker.test.cjs",
+      "sha256": "0b4b8b3232be367c1595a5b3eadca3e04bbc0af274453baf403958c8906bea05",
+      "purpose": "circuitBreaker.test"
+    },
+    {
+      "file": "certification-tests/unit/dedupe.test.cjs",
+      "sha256": "402eced43346ee2510eeb611053b027d797ed0724f00c478cf4f08250c57ddda",
+      "purpose": "dedupe.test"
+    },
+    {
+      "file": "certification-tests/unit/discovery-options.test.cjs",
+      "sha256": "f2bbd5e489316009a3023d2ada8d36721ade8857e08ec8191c01afb179c7858b",
+      "purpose": "discovery options.test"
+    },
+    {
+      "file": "certification-tests/unit/discovery-query-attribution.test.cjs",
+      "sha256": "fc26d3a3b857724b8e256a963f1a0515c6d986540d5869696005285a8984854b",
+      "purpose": "discovery query attribution.test"
+    },
+    {
+      "file": "certification-tests/unit/discovery-state.test.cjs",
+      "sha256": "cb1b29db3afdd8e8bdc0e1e8408e6f080d336465535d9b83a456aab7eb42fb34",
+      "purpose": "discovery state.test"
+    },
+    {
+      "file": "certification-tests/unit/discovery.test.cjs",
+      "sha256": "88b3b9758ebcaee7da8ba13027bd9fa4b161854fa6876d0a33c7b58109886351",
+      "purpose": "discovery.test"
+    },
+    {
+      "file": "certification-tests/unit/eligibility.test.cjs",
+      "sha256": "b85779949770e101fe6fe73d7186d7e6b28e1211dc38c4247f2a9b9862172c27",
+      "purpose": "eligibility.test"
+    },
+    {
+      "file": "certification-tests/unit/error-page.test.cjs",
+      "sha256": "210f4b20372c0a67aef157a4b80c1d6c486eb44335ef6068c4bb849e361f3bcf",
+      "purpose": "error page.test"
+    },
+    {
+      "file": "certification-tests/unit/fingerprint.test.cjs",
+      "sha256": "ddad499ef240800741d55dc38c4d825e7e7d68b82ed05205e40b4154eebe48bf",
+      "purpose": "fingerprint.test"
+    },
+    {
+      "file": "certification-tests/unit/health-v2.test.cjs",
+      "sha256": "8cbda2d266067501db7b0bf3a89e770f77e2b641ead78f91d97395e8299ac130",
+      "purpose": "health v2.test"
+    },
+    {
+      "file": "certification-tests/unit/health.test.cjs",
+      "sha256": "50dd1f65a777154e57714be4c864702b8c68a4d933b012bd8ed31159bb45587a",
+      "purpose": "health.test"
+    },
+    {
+      "file": "certification-tests/unit/input-fingerprint.test.cjs",
+      "sha256": "4f8ed0772c9ea535aa9179a1597566d00aa4d854ed877f2ee7017b9c03d6d77d",
+      "purpose": "input fingerprint.test"
+    },
+    {
+      "file": "certification-tests/unit/lease-v3.test.cjs",
+      "sha256": "9fc4c4c501ce80df77580f8ab270e883ed661e4761b82f3cfd827bfbecc77a3a",
+      "purpose": "lease v3.test"
+    },
+    {
+      "file": "certification-tests/unit/lease.test.cjs",
+      "sha256": "c2609562b01ca15b83fc582ed39b334b91300b43cdd6c674d96552ea152a1c3b",
+      "purpose": "lease.test"
+    },
+    {
+      "file": "certification-tests/unit/listing-type.test.cjs",
+      "sha256": "6a73a32529ce7afa018116cf308f121a38a7dc2b8bf8f5be4c58e291e3652250",
+      "purpose": "listing type.test"
+    },
+    {
+      "file": "certification-tests/unit/reconciliation-health.test.cjs",
+      "sha256": "0961316df4c64e02d5340204bc8c8aee187358f7a15ac79a7b0daef94dbc13b1",
+      "purpose": "reconciliation health.test"
+    },
+    {
+      "file": "certification-tests/unit/recovery-v2.test.cjs",
+      "sha256": "44c15f135645d1c114a5a7f4c41b4248adeefe1fb328fbf3aa9621640049001a",
+      "purpose": "recovery v2.test"
+    },
+    {
+      "file": "certification-tests/unit/recovery.test.cjs",
+      "sha256": "264bb2e9e216427c725fc6305a359603e17cc87467ef03f6ad1a5c5eda733b2f",
+      "purpose": "recovery.test"
+    },
+    {
+      "file": "certification-tests/unit/retry-after.test.cjs",
+      "sha256": "74aae92b1c1ebfa8f9b71d1a4b1ea8afae72fe5f422d6257e4bbb27500736f50",
+      "purpose": "retry after.test"
+    },
+    {
+      "file": "certification-tests/unit/seller-layout.test.cjs",
+      "sha256": "f0e44b6e7d24f22362a811098c9d2472cb197485c9ebd295d3f3b792a4ebe4be",
+      "purpose": "seller layout.test"
+    },
+    {
+      "file": "certification-tests/unit/structured-identity.test.cjs",
+      "sha256": "f78089bc8f31fe745997e7a22900ea8793ef45d41c631eac96e49ac484c4a481",
+      "purpose": "structured identity.test"
+    },
+    {
+      "file": "certification-tests/unit/timezone-generic-dst.test.cjs",
+      "sha256": "750f5cc1291703300cd865cbc036b8c1aa801997d2fb4a931177f9515222d3bb",
+      "purpose": "timezone generic dst.test"
+    },
+    {
+      "file": "certification-tests/unit/timezone.test.cjs",
+      "sha256": "7b9af117c2d1a6fd36a52c99fac78dd6f46fee023f58dd29f7d6c425cf971cdf",
+      "purpose": "timezone.test"
+    },
+    {
+      "file": "certification-tests/unit/url.test.cjs",
+      "sha256": "ecc2ce829b8ac7dff82539684b1caf8c0f7018a5f6fecf51eaf50bc4e5bb301b",
+      "purpose": "url.test"
+    }
+  ]
+}

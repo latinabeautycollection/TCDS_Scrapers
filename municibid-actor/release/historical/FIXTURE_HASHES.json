@@ -1,0 +1,25 @@
+{
+  "version": "1.3.0",
+  "fixtures": [
+    {
+      "file": "certification-tests/fixtures/municibid-detail.html",
+      "sha256": "8f721da259fe94a3e19dfea4d60a8364e99c340c9f81a34376966d267b1d4a7e"
+    },
+    {
+      "file": "certification-tests/fixtures/municibid-discovery.html",
+      "sha256": "c36e5056ad30bd2d13b60c47d46e62f7e27f6a554e9bccfa295c45afb0a39852"
+    },
+    {
+      "file": "certification-tests/fixtures/municibid-option-navigation.html",
+      "sha256": "1bfcecde2f460a8843398bd4fdc56b1a8ec7f51d7e9d975a5ae947b56b3b4ad0"
+    },
+    {
+      "file": "certification-tests/fixtures/municibid-restricted.html",
+      "sha256": "8f6e1a32ed85535da660e2d38dbcb99aa36821178db883f5786d2cebe5e68d9b"
+    },
+    {
+      "file": "certification-tests/fixtures/municibid-search.html",
+      "sha256": "d30118d80311417b99c81ccd17241f0eb8a7c0c033bf8a34a9be7da447c96913"
+    }
+  ]
+}

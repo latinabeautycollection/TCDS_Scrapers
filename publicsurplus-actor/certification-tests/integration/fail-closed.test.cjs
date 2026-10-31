@@ -1,0 +1,4 @@
+const fs=require('fs');const path=require('path');
+test('Public Surplus does not call PropertyRoom price-only early skip',()=>{const s=fs.readFileSync(path.join(__dirname,'../../src/extractors/publicsurplus.js'),'utf8');expect(s).not.toMatch(/shouldEarlySkip\s*\(/);});
+test('direct-only transport and health failures are enforced',()=>{const s=fs.readFileSync(path.join(__dirname,'../../src/extractors/publicsurplus.js'),'utf8');expect(s).not.toMatch(/Actor\.createProxyConfiguration/);expect(s).toMatch(/useSessionPool: false/);expect(s).toMatch(/PUBLICSURPLUS_HEALTH_FAIL/);});
+test('authorization responses stop retries through the supported per-request error hook',()=>{const s=fs.readFileSync(path.join(__dirname,'../../src/extractors/publicsurplus.js'),'utf8');expect(s).toMatch(/errorHandler:\s*async/);expect(s).toMatch(/request\.noRetry\s*=\s*true/);expect(s).toMatch(/statusFromError\(error\)/);expect(s).not.toMatch(/blockedStatusCodes/);});
