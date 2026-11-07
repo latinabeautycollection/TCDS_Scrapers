@@ -3,8 +3,8 @@
   "name": "propertyroom-ebay-pipeline",
   "title": "PropertyRoom Acquisition Intelligence & eBay Comp Engine",
   "description": "Enterprise acquisition-intelligence actor that scrapes PropertyRoom auction listings, retrieves eBay comparable listings, normalizes all records into a governed unified schema, and delivers audit-ready outputs for arbitrage scoring, export, webhook delivery, and downstream database ingestion.",
-  "version": "1.0.0",
-  "buildTag": "release-1.0.0",
+  "version": "1.0",
+  "buildTag": "latest",
   "environmentVariables": {
     "NODE_ENV": "production",
     "PIPELINE_ENV": "production",

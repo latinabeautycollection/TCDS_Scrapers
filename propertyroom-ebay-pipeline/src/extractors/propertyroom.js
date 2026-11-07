@@ -29,6 +29,7 @@ import { CheerioCrawler } from 'crawlee';
 import { Actor } from 'apify';
 import { normalizeRecord, validateRecord, addSupabaseAliases } from '../utils/normalize.js';
 import { incrementStat } from '../utils/logging.js';
+import { decideDetailFetch } from '../utils/intakeLookup.js';
 
 // ─── URL helpers ─────────────────────────────────────────────────────────────
 
@@ -1319,51 +1320,89 @@ export function extractDetailPage($, url, debug, log, indexCategory) {
 // ─── Index page helpers ───────────────────────────────────────────────────────
 
 /**
- * Collect all item detail page URLs from an index/search/category page.
+ * Collect all item detail page URLs from an index/search/category page, with what the search card shows.
+ * PropertyRoom cards (2026 layout) are one link per lot wrapping .listing-title, .listing-price, .listing-bids
+ * and .listing-time[data-end]. Values are read only from the lot's own card, never from the surrounding grid.
  * @param {import('cheerio').CheerioAPI} $
- * @returns {{ url: string, indexPrice: number|null }[]}
+ * @returns {{ url: string, indexPrice: number|null, indexTitle: string|null, indexBids: number|null, indexEnd: string|null }[]}
  */
 function collectDetailUrls($) {
-  const seen = new Set();
+  const seen = new Map();
   const results = [];
 
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     // Match detail URL patterns
-    if (/\/l\/[^/]+\/\d+/.test(href) || /\/s\/\d+/.test(href)) {
-      // Build absolute URL and strip query params
-      let fullUrl = href;
-      if (href.startsWith('/')) {
-        fullUrl = DOMAIN + href;
-      }
-      const clean = fullUrl.split('?')[0].split('#')[0];
-      if (!seen.has(clean)) {
-        seen.add(clean);
+    if (!(/\/l\/[^/]+\/\d+/.test(href) || /\/s\/\d+/.test(href))) return;
 
-        let indexPrice = null;
-        // Traverse up the DOM to find the listing's price block
-        let parent = $(el).parent();
-        let depth = 0;
-        while (parent.length && depth < 5) {
-          const text = parent.text() || '';
-          const priceMatch = text.match(/\$\s*([\d,]+\.\d{2})/);
-          if (priceMatch) {
-            const parsed = parseFloat(priceMatch[1].replace(/,/g, ''));
-            if (!isNaN(parsed) && parsed >= 0) {
-              indexPrice = parsed;
-              break;
-            }
-          }
-          parent = parent.parent();
-          depth++;
-        }
+    // Build absolute URL and strip query params
+    const fullUrl = href.startsWith('/') ? DOMAIN + href : href;
+    const clean = fullUrl.split('?')[0].split('#')[0];
+    const card = indexCardFor($, el, clean);
+    const values = card ? readIndexCard($, card) : { indexPrice: null, indexTitle: null, indexBids: null, indexEnd: null };
 
-        results.push({ url: clean, indexPrice });
-      }
+    const existing = seen.get(clean);
+    if (existing) {
+      // A lot can have several links (image + title); keep the first value found for each field.
+      for (const [k, v] of Object.entries(values)) if (existing[k] == null && v != null) existing[k] = v;
+      return;
     }
+    const entry = { url: clean, ...values };
+    seen.set(clean, entry);
+    results.push(entry);
   });
 
   return results;
+}
+
+/**
+ * The element holding one lot's card: the link itself when it wraps the card, otherwise the nearest ancestor
+ * (up to 4 levels) that links to this lot only. Returns null when no such element exists.
+ */
+function indexCardFor($, el, cleanUrl) {
+  const linksTo = (node) => node.find('a[href]').add(node.filter('a[href]')).toArray()
+    .map((a) => {
+      const h = $(a).attr('href') || '';
+      return (h.startsWith('/') ? DOMAIN + h : h).split('?')[0].split('#')[0];
+    })
+    .filter((u) => /\/l\/[^/]+\/\d+/.test(u) || /\/s\/\d+/.test(u));
+
+  let node = $(el);
+  let best = null;
+  for (let depth = 0; depth < 5 && node.length; depth++) {
+    const urls = new Set(linksTo(node));
+    if (urls.size > 1 || (urls.size === 1 && !urls.has(cleanUrl))) break; // reached a container of other lots
+    best = node;
+    if (/\$\s*[\d,]+\.\d{2}/.test(node.text() || '')) break;         // this node already carries the price
+    node = node.parent();
+  }
+  return best;
+}
+
+/** Title, price, bid count and end time as shown on one lot's search card. */
+function readIndexCard($, card) {
+  const text = (sel) => card.find(sel).first().text().replace(/\s+/g, ' ').trim();
+
+  const rawTitle = text('.listing-title') || text('[class*="title" i]') || card.attr('title') || '';
+  const indexTitle = rawTitle && !rawTitle.includes('$') && rawTitle.length <= 200 ? rawTitle : null;
+
+  // Price element first; otherwise the card text without its title (a title can contain "Retail $549.00").
+  let priceText = text('.listing-price') || text('[class*="price" i]');
+  if (!priceText) {
+    const all = card.text().replace(/\s+/g, ' ');
+    priceText = rawTitle ? all.replace(rawTitle, ' ') : all;
+  }
+  const priceMatch = priceText.match(/\$\s*([\d,]+(?:\.\d{2})?)/);
+  const parsedPrice = priceMatch ? parseFloat(priceMatch[1].replace(/,/g, '')) : NaN;
+  const indexPrice = Number.isFinite(parsedPrice) && parsedPrice >= 0 ? parsedPrice : null;
+
+  const bidsMatch = text('.listing-bids').match(/(\d+)\s*bid/i);
+  const indexBids = bidsMatch ? Number(bidsMatch[1]) : null;
+
+  const endAttr = card.find('[data-end]').first().attr('data-end') || null;
+  const indexEnd = endAttr && Number.isFinite(Date.parse(endAttr)) ? new Date(endAttr).toISOString() : null;
+
+  return { indexPrice, indexTitle, indexBids, indexEnd };
 }
 
 /**
@@ -1460,6 +1499,10 @@ function findNextPageUrl($, currentUrl) {
  *   dedupeManager: import('../utils/dedupe.js').DedupeManager,
  *   webhookManager: import('../utils/webhook.js').WebhookManager | null,
  *   seenExternalIds?: Set<string>,
+ *   intakeLookup?: import('../utils/intakeLookup.js').IntakeLookup | null,
+ *   fullRefresh?: boolean,
+ *   endingSoonMs?: number,
+ *   skippedExternalIds?: Set<string>,
  *   log: ReturnType<import('../utils/logging.js').createLogger>,
  * }} opts
  * @returns {CheerioCrawler}
@@ -1481,7 +1524,16 @@ export function createPropertyRoomCrawler(opts) {
     seenExternalIds,
     log,
     maxItemsPerRun = 0,
+    intakeLookup = null,
+    fullRefresh = false,
+    endingSoonMs = 24 * 60 * 60 * 1000,
+    skippedExternalIds = null,
   } = opts;
+
+  // With the intake lookup (or a full refresh) the database decides what is unchanged, so every opened lot is
+  // sent and the local Apify-memory skip is not used.
+  const databaseDecides = fullRefresh || !!intakeLookup;
+  const openReasons = {};
 
   let detailSavedCount = 0;
 
@@ -1538,36 +1590,57 @@ export function createPropertyRoomCrawler(opts) {
           log.warning(`No listings detected on index page`, { url });
         }
 
+        // Queue-level dedupe: skip lots already queued this run.
+        const candidates = [];
         for (const item of detailItems) {
-          const detailUrl = item.url;
-          const indexPrice = item.indexPrice;
-          const extId = externalIdFromUrl(detailUrl);
-
+          const extId = externalIdFromUrl(item.url);
           // Track every listing the actor saw on this run (regardless of dedupe)
           if (seenExternalIds && extId) seenExternalIds.add(extId);
-
-          // Queue-level dedupe: skip if already queued this run
           if (dedupeManager.isQueued(extId)) {
             log.debug(`Skipping already-queued item: ${extId}`);
             incrementStat('itemsSkipped');
             continue;
           }
           dedupeManager.markQueued(extId);
+          candidates.push({ ...item, extId });
+        }
 
-          // Deep Skip: Bail if we have seen it and the price hasn't changed.
-          // Older deployed actors may not have this optional dedupe method yet.
-          const safeToSkip = typeof dedupeManager.shouldEarlySkip === 'function'
-            ? await dedupeManager.shouldEarlySkip(extId, indexPrice)
-            : false;
-          if (safeToSkip) {
-            log.debug(`Early dropping detail page load (unchanged price): ${extId}`);
+        // Which lots does the database already have? (null = lookup unavailable -> open everything)
+        const known = !fullRefresh && intakeLookup && candidates.length
+          ? await intakeLookup.lookup(candidates.map((c) => c.extId))
+          : null;
+
+        for (const item of candidates) {
+          const { extId, indexPrice } = item;
+          let open = true;
+          let reason = fullRefresh ? 'full_refresh' : 'no_lookup';
+
+          if (known) {
+            ({ open, reason } = decideDetailFetch(item, known.get(extId), { endingSoonMs }));
+          } else if (!databaseDecides) {
+            // Legacy: local Apify-memory skip when the price is unchanged.
+            // Older deployed actors may not have this optional dedupe method yet.
+            const safeToSkip = typeof dedupeManager.shouldEarlySkip === 'function'
+              ? await dedupeManager.shouldEarlySkip(extId, indexPrice)
+              : false;
+            if (safeToSkip) {
+              open = false;
+              reason = 'unchanged_price_local';
+            }
+          }
+
+          openReasons[reason] = (openReasons[reason] ?? 0) + 1;
+          if (!open) {
+            if (skippedExternalIds) skippedExternalIds.add(extId);
+            log.debug(`Not opening lot page (${reason}): ${extId}`);
+            incrementStat('itemsSkipped');
             continue;
           }
 
           await crawler.addRequests([{
-            url: detailUrl,
+            url: item.url,
             uniqueKey: extId,
-            userData: { type: 'detail', indexCategory },
+            userData: { type: 'detail', indexCategory, openReason: reason },
           }]);
         }
         incrementStat('itemsFound', detailItems.length);
@@ -1621,10 +1694,11 @@ export function createPropertyRoomCrawler(opts) {
         }
 
         // ── Fingerprint-aware incremental dedupe ────────────────────────
-        const shouldIngest = await dedupeManager.shouldProcess(
-          record.external_id,
-          record.content_hash,
-        );
+        // When the database decides (lookup / full refresh), every opened lot is sent: the database compares it
+        // with its copy and records seen / changed. Otherwise use the local Apify-memory check.
+        const shouldIngest = databaseDecides
+          ? true
+          : await dedupeManager.shouldProcess(record.external_id, record.content_hash);
         if (!shouldIngest) {
           log.info(`Skipping unchanged/fresh listing`, {
             id: record.external_id,
@@ -1680,6 +1754,9 @@ export function createPropertyRoomCrawler(opts) {
       incrementStat('errors');
     },
   });
+
+  // Why lot pages were opened or skipped this run (new, price_changed, unchanged, ...), for the run log.
+  crawler.openReasons = openReasons;
 
   // Attach proxy config asynchronously
   const originalRun = crawler.run.bind(crawler);

@@ -16,6 +16,7 @@ import { fetchEbayListings } from './src/extractors/ebay.js';
 
 import { WebhookManager } from './src/utils/webhook.js';
 import { DedupeManager } from './src/utils/dedupe.js';
+import { IntakeLookup } from './src/utils/intakeLookup.js';
 import {
   createLogger,
   getRunStats,
@@ -38,6 +39,11 @@ const DEFAULTS = Object.freeze({
 
   webhookUrl: null,
   webhookAuthToken: null,
+
+  intakeUrl: null,
+  intakeSecret: null,
+  fullRefresh: false,
+  endingSoonHours: 24,
   webhookBatchSize: 10,
   webhookMaxRetries: 5,
   webhookTimeoutMs: 30_000,
@@ -162,6 +168,11 @@ await Actor.main(async () => {
 
     webhookUrl: safeString(rawInput.webhookUrl, DEFAULTS.webhookUrl),
     webhookAuthToken: safeString(rawInput.webhookAuthToken, DEFAULTS.webhookAuthToken),
+
+    intakeUrl: safeString(rawInput.intakeUrl, DEFAULTS.intakeUrl),
+    intakeSecret: safeString(rawInput.intakeSecret, DEFAULTS.intakeSecret),
+    fullRefresh: clampBool(rawInput.fullRefresh, DEFAULTS.fullRefresh),
+    endingSoonHours: clampInt(rawInput.endingSoonHours, DEFAULTS.endingSoonHours, 1, 168),
     webhookBatchSize: clampInt(rawInput.webhookBatchSize, DEFAULTS.webhookBatchSize, 1, 500),
     webhookMaxRetries: clampInt(rawInput.webhookMaxRetries, DEFAULTS.webhookMaxRetries, 0, 20),
     webhookTimeoutMs: clampInt(rawInput.webhookTimeoutMs, DEFAULTS.webhookTimeoutMs, 1000, 120000),
@@ -341,6 +352,23 @@ await Actor.main(async () => {
   // Sent to the webhook as a "touch" payload after the crawl so the backend can
   // refresh last_seen_at on still-available listings even when dedupe skipped them.
   const seenExternalIds = new Set();
+  // Lots the intake lookup said are unchanged: not re-opened, reported with a touch instead.
+  const skippedExternalIds = new Set();
+
+  // Database lookup: only open lot pages that are new, changed, incomplete or ending soon.
+  const intakeLookup = input.intakeUrl && input.intakeSecret
+    ? new IntakeLookup({
+        url: input.intakeUrl,
+        secret: input.intakeSecret,
+        source: input.sourceName,
+        log: createLogger('intake', input.debug),
+      })
+    : null;
+  if (input.intakeUrl && !input.intakeSecret) log.warning('intakeUrl is set but intakeSecret is empty: lookup and touch disabled');
+  log.info('Lot page mode', {
+    mode: input.fullRefresh ? 'full_refresh' : intakeLookup ? 'database_lookup' : 'local_memory',
+    endingSoonHours: input.endingSoonHours,
+  });
 
   if (hasPropertyRoomWork) {
     const crawler = createPropertyRoomCrawler({
@@ -357,6 +385,10 @@ await Actor.main(async () => {
       dedupeManager,
       webhookManager,
       seenExternalIds,
+      skippedExternalIds,
+      intakeLookup,
+      fullRefresh: input.fullRefresh,
+      endingSoonMs: input.endingSoonHours * 60 * 60 * 1000,
       runContext,
       sourceName: input.sourceName,
       maxItemsPerRun: input.maxItemsPerRun, 
@@ -373,7 +405,10 @@ await Actor.main(async () => {
     try {
       await crawler.run();
       await dedupeManager.persist();
-      log.info('PropertyRoom crawl complete');
+      log.info('PropertyRoom crawl complete', {
+        lotPageDecisions: crawler.openReasons,
+        ...(intakeLookup ? { intake: intakeLookup.stats } : {}),
+      });
     } catch (err) {
       log.exception('PropertyRoom crawl failed', err);
       // Still persist state even on failure so the next run doesn't start from scratch
@@ -424,9 +459,17 @@ await Actor.main(async () => {
   }
 
   // ── Touch path: tell the backend which listings the actor saw this run ──
-  // Refreshes last_seen_at for every still-available listing, including ones
-  // dedupe skipped. Backend sweeper deletes anything not touched within 26h.
-  if (input.webhookUrl && seenExternalIds.size > 0) {
+  // With the intake lookup: touch only the lots that were skipped as unchanged (opened lots reach the database
+  // through the run's dataset, so touching them too would count them twice).
+  if (intakeLookup && skippedExternalIds.size > 0) {
+    try {
+      const touched = await intakeLookup.touch(Array.from(skippedExternalIds));
+      log.info(`Touch sent for ${skippedExternalIds.size} unchanged lots (${touched} known to the database)`);
+    } catch (err) {
+      log.warning(`Intake touch failed: ${err.message}`);
+    }
+  } else if (!intakeLookup && input.webhookUrl && seenExternalIds.size > 0) {
+    // Legacy: refreshes last_seen_at for every still-available listing, including ones dedupe skipped.
     try {
       const ids = Array.from(seenExternalIds);
       const CHUNK = 5000;

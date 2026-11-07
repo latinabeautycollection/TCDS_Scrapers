@@ -83,7 +83,9 @@
       "type": "array",
       "description": "Apify proxy groups to use.",
       "editor": "stringList",
-      "default": ["RESIDENTIAL"]
+      "default": [
+        "RESIDENTIAL"
+      ]
     },
     "dedupePersistInterval": {
       "title": "Dedupe Persist Interval",
@@ -133,6 +135,35 @@
       "editor": "textfield",
       "isSecret": true,
       "nullable": true
+    },
+    "intakeUrl": {
+      "title": "Intake URL (database lookup)",
+      "type": "string",
+      "description": "apify-intake edge function URL, e.g. https://<project>.supabase.co/functions/v1/apify-intake. When set with the intake secret, the actor asks the database which lots it already has and only opens lot pages that are new, changed (title or price), incomplete or ending soon; skipped lots are reported with a touch.",
+      "editor": "textfield",
+      "nullable": true
+    },
+    "intakeSecret": {
+      "title": "Intake Secret",
+      "type": "string",
+      "description": "INTAKE_WEBHOOK_SECRET of the apify-intake function (sent as x-webhook-secret).",
+      "editor": "textfield",
+      "isSecret": true,
+      "nullable": true
+    },
+    "fullRefresh": {
+      "title": "Full Refresh",
+      "type": "boolean",
+      "description": "Open every lot page regardless of the database lookup. Use on the weekly schedule to catch changes that only show on the lot page (description, shipping, photos).",
+      "default": false
+    },
+    "endingSoonHours": {
+      "title": "Re-open Lots Ending Within (hours)",
+      "type": "integer",
+      "description": "Always re-open lots that end within this many hours, for a final check before they close.",
+      "default": 24,
+      "minimum": 1,
+      "maximum": 168
     },
     "webhookBatchSize": {
       "title": "Webhook Batch Size",
@@ -190,7 +221,10 @@
       "title": "eBay Environment",
       "type": "string",
       "description": "Use production for live data or sandbox for testing.",
-      "enum": ["production", "sandbox"],
+      "enum": [
+        "production",
+        "sandbox"
+      ],
       "default": "production"
     },
     "ebayQueries": {
@@ -231,7 +265,13 @@
       "title": "CSV Export Profile",
       "type": "string",
       "description": "Column profile to use for CSV export.",
-      "enum": ["overview", "propertyroom", "ebay", "arbitrage", "audit"],
+      "enum": [
+        "overview",
+        "propertyroom",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
       "default": "propertyroom"
     },
     "csvOutputDir": {
@@ -266,7 +306,13 @@
       "title": "Google Sheets Export Profile",
       "type": "string",
       "description": "Column profile to use for Google Sheets export.",
-      "enum": ["overview", "propertyroom", "ebay", "arbitrage", "audit"],
+      "enum": [
+        "overview",
+        "propertyroom",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
       "default": "overview"
     },
     "googleServiceAccountKey": {
@@ -287,7 +333,13 @@
       "title": "SQL Export Profile",
       "type": "string",
       "description": "Logical SQL export profile for batch generation.",
-      "enum": ["overview", "propertyroom", "ebay", "arbitrage", "audit"],
+      "enum": [
+        "overview",
+        "propertyroom",
+        "ebay",
+        "arbitrage",
+        "audit"
+      ],
       "default": "propertyroom"
     },
     "sqlWrapInTransaction": {
